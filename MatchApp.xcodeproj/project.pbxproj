@@ -13,6 +13,9 @@
 		BADC03D52522F87100AA96E1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BADC03D32522F87100AA96E1 /* Main.storyboard */; };
 		BADC03D72522F87500AA96E1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BADC03D62522F87500AA96E1 /* Assets.xcassets */; };
 		BADC03DA2522F87500AA96E1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BADC03D82522F87500AA96E1 /* LaunchScreen.storyboard */; };
+		BADC03E425244B4A00AA96E1 /* CardModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BADC03E325244B4A00AA96E1 /* CardModel.swift */; };
+		BADC03E725244C1C00AA96E1 /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = BADC03E625244C1C00AA96E1 /* Card.swift */; };
+		BADC03EC25244F1900AA96E1 /* CardCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BADC03EB25244F1900AA96E1 /* CardCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +27,9 @@
 		BADC03D62522F87500AA96E1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BADC03D92522F87500AA96E1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		BADC03DB2522F87500AA96E1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BADC03E325244B4A00AA96E1 /* CardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardModel.swift; sourceTree = "<group>"; };
+		BADC03E625244C1C00AA96E1 /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
+		BADC03EB25244F1900AA96E1 /* CardCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardCollectionViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,6 +65,9 @@
 				BADC03CD2522F87100AA96E1 /* AppDelegate.swift */,
 				BADC03CF2522F87100AA96E1 /* SceneDelegate.swift */,
 				BADC03D12522F87100AA96E1 /* ViewController.swift */,
+				BADC03E625244C1C00AA96E1 /* Card.swift */,
+				BADC03E325244B4A00AA96E1 /* CardModel.swift */,
+				BADC03EB25244F1900AA96E1 /* CardCollectionViewCell.swift */,
 				BADC03D32522F87100AA96E1 /* Main.storyboard */,
 				BADC03D62522F87500AA96E1 /* Assets.xcassets */,
 				BADC03D82522F87500AA96E1 /* LaunchScreen.storyboard */,
@@ -138,7 +147,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				BADC03D22522F87100AA96E1 /* ViewController.swift in Sources */,
+				BADC03E425244B4A00AA96E1 /* CardModel.swift in Sources */,
+				BADC03E725244C1C00AA96E1 /* Card.swift in Sources */,
 				BADC03CE2522F87100AA96E1 /* AppDelegate.swift in Sources */,
+				BADC03EC25244F1900AA96E1 /* CardCollectionViewCell.swift in Sources */,
 				BADC03D02522F87100AA96E1 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
