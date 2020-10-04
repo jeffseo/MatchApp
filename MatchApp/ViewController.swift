@@ -16,8 +16,9 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
   let model = CardModel()
   var cardsArray = [Card]()
   
+  static let maxGameTime:Int = 60 * 1000 // 60 seconds in milliseconds
   var timer:Timer?
-  var milliseconds:Int = 10 * 1000 // 10 seconds in milliseconds
+  var milliseconds = maxGameTime
   
   var firstFlippedCardIndex:IndexPath?
   
@@ -228,7 +229,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     firstFlippedCardIndex = nil
     cardsArray = model.getCards()
     collectionView.reloadData()
-    milliseconds = 10 * 1000
+    milliseconds = ViewController.maxGameTime
     timer = Timer.scheduledTimer(timeInterval: 0.001, target: self, selector: #selector(timerFired), userInfo: nil, repeats: true)
     RunLoop.main.add(timer!, forMode: .common  )
   }
