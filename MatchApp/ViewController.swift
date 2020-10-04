@@ -21,6 +21,8 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
   
   var firstFlippedCardIndex:IndexPath?
   
+  var soundPlayer = SoundManager()
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     // Do any additional setup after loading the view.
@@ -35,6 +37,12 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     // Selector is the function that will be called when the timer is fired
     timer = Timer.scheduledTimer(timeInterval: 0.001, target: self, selector: #selector(timerFired), userInfo: nil, repeats: true)
     RunLoop.main.add(timer!, forMode: .common	)
+  }
+  
+  // This function is called when view appears on screen
+  override func viewDidAppear(_ animated: Bool) {
+    // Play shuffle sound
+    soundPlayer.playSound(effect: .shuffle)
   }
   
   // MARK: - Timer Methods
@@ -97,13 +105,22 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
   
   // This function is the delegate function that is responsible for handling taps
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    // Check if there's any time remaining. Don't let the user interact if the time is 0
+    if milliseconds <= 0 {
+      return
+    }
+    
     // Get a reference to the cell that was tapped
     let cell = collectionView.cellForItem(at: indexPath) as? CardCollectionViewCell
     
     // Check the status of the card to determine how to flip it
     if cell?.card?.isFlipped == false && cell?.card?.isMatched == false {
+      
       // Flip the card up
       cell?.flipUp()
+      
+      // Play sound
+      soundPlayer.playSound(effect: .flip)
       
       // Check if this is the first card that was flipped or the second card
       if firstFlippedCardIndex == nil {
@@ -133,6 +150,9 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     if cardOne.imageName == cardTwo.imageName {
       // It's a match
       
+      // Play match sound
+      soundPlayer.playSound(effect: .match)
+      
       // Set the status and remove them
       cardOne.isMatched = true
       cardTwo.isMatched = true
@@ -145,6 +165,10 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     }
     else {
       // It's not a match
+      
+      // Play no match sound
+      soundPlayer.playSound(effect: .nomatch)
+      
       cardOne.isFlipped = false
       cardTwo.isFlipped = false
       
@@ -188,12 +212,25 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     
     // Add a button for the user to dismiss it
     // This is to add a button to the alert window for user to dismiss the message
-    let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
+    let okAction = UIAlertAction(title: "Ok", style: .default, handler: alertHandler)
     alert.addAction(okAction)
     
     // Show the alert
     present(alert, animated: true, completion: nil)
     
+  }
+  
+  func alertHandler(action: UIAlertAction) {
+      reset()
+  }
+  
+  func reset() {
+    firstFlippedCardIndex = nil
+    cardsArray = model.getCards()
+    collectionView.reloadData()
+    milliseconds = 10 * 1000
+    timer = Timer.scheduledTimer(timeInterval: 0.001, target: self, selector: #selector(timerFired), userInfo: nil, repeats: true)
+    RunLoop.main.add(timer!, forMode: .common  )
   }
 }
 
