@@ -14,6 +14,8 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
   let model = CardModel()
   var cardsArray = [Card]()
   
+  var firstFlippedCardIndex:IndexPath?
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     // Do any additional setup after loading the view.
@@ -34,6 +36,8 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     return cardsArray.count
   }	
   
+  // Method is called when the collection view wants to create/use a cell for that certain index
+  // Wants to know what type of cell to use for that index
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     // IndexPath represents which cell in the collection view we are targetting
 
@@ -41,15 +45,24 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     // The withReuseIdentfier is the name given to the prototype cell
     // dequeueResuableCell returns a UICell object. We must cast it to the object we want which inherits the UICell which is CardCollectionViewCell (set manually in prototype property)
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CardCell", for: indexPath) as! CardCollectionViewCell
+        
+    // Return it
+    return cell
+  }
+  
+  // Method is called right before the cell is displayed at indexPath
+  // Gives a chance to configure the cell before display
+  func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+    // Configure the state of the cell based on the properties of the Card that it represents
+    
+    let cardCell = cell as? CardCollectionViewCell
     
     // Get the card from the card array
     let card = cardsArray[indexPath.row]
     
-    cell.configureCell(card: card)
-    
-    // Return it
-    return cell
+    cardCell?.configureCell(card: card)
   }
+
   
   // This function is the delegate function that is responsible for handling taps
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -57,15 +70,58 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     let cell = collectionView.cellForItem(at: indexPath) as? CardCollectionViewCell
     
     // Check the status of the card to determine how to flip it
-    if cell?.card?.isFlipped == false {
+    if cell?.card?.isFlipped == false && cell?.card?.isMatched == false {
       // Flip the card up
       cell?.flipUp()
-    }
-    else {
-      // Flip the card down
-      cell?.flipDown()
+      
+      // Check if this is the first card that was flipped or the second card
+      if firstFlippedCardIndex == nil {
+        // This is the first card flipped over
+        firstFlippedCardIndex = indexPath
+      }
+      else {
+        // Second card that is flipped
+        
+        // Run the comparison logic
+        checkForMatch(indexPath)
+      }
     }
   }
 
+  // MARK: - Game Logic Methods
+  func checkForMatch(_ secondFlippedCardIndex: IndexPath) {
+    // Get the two card objects for the two indices and see if they match
+    let cardOne = cardsArray[firstFlippedCardIndex!.row]
+    let cardTwo = cardsArray[secondFlippedCardIndex.row]
+    
+    // Get the two collection view cells that represent card one and two
+    let cardOneCell = collectionView.cellForItem(at: firstFlippedCardIndex!) as? CardCollectionViewCell
+    let cardTwoCell = collectionView.cellForItem(at: secondFlippedCardIndex) as? CardCollectionViewCell
+    
+    // Compare the two cards
+    if cardOne.imageName == cardTwo.imageName {
+      // It's a match
+      
+      // Set the status and remove them
+      cardOne.isMatched = true
+      cardTwo.isMatched = true
+      
+      cardOneCell?.remove()
+      cardTwoCell?.remove()
+    }
+    else {
+      // It's not a match
+      cardOne.isFlipped = false
+      cardTwo.isFlipped = false
+      
+      // Flip them back over
+      cardOneCell?.flipDown()
+      cardTwoCell?.flipDown()
+    }
+    
+    // Reset the firstFlippedCardIndex property for the next match
+    firstFlippedCardIndex = nil
+  }
+  
 }
 
